@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Titele"] = "Join Game";
+}
+
+
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+
+    <style type="text/css">
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: black;
+            z-index: 99;
+            opacity: 0.8;
+            filter: alpha(opacity=80);
+            -moz-opacity: 0.8;
+            min-height: 100%;
+            width: 100%;
+        }
+
+        .loading {
+            font-family: Arial;
+            font-size: 10pt;
+            border: 1px solid white;
+            width: 480px;
+            height: 480px;
+            display: none;
+            position: fixed;
+            background-color: White;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" align="center">
+        Loading...
+        <br />
+        <iframe src="https://giphy.com/embed/xT9IgFQsNYi1zBUiyc" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><a href="https://giphy.com/gifs/pixel-sweet-drink-xT9IgFQsNYi1zBUiyc"></a>
+    </div>
+    <script type="text/javascript">
+        var modal, loading;
+        function ShowProgress() {
+            modal = document.createElement("DIV");
+            modal.className = "modal";
+            document.body.appendChild(modal);
+            loading = document.getElementsByClassName("loading")[0];
+            loading.style.display = "block";
+            var top = Math.max(window.innerHeight / 2 - loading.offsetHeight / 2, 0);
+            var left = Math.max(window.innerWidth / 2 - loading.offsetWidth / 2, 0);
+            loading.style.top = top + "px";
+            loading.style.left = left + "px";
+        };
+        ShowProgress();
+    </script>
+
+    <!-- Keep the Page Content Here.-->
+    <div class="text-center">
+
+        <h2>Heading</h2>
+
+        <a asp-action="Game"><input class="btn btn-primary" value="Add" /> </a>
+    </div>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            setTimeout(function () {
+                document.body.removeChild(modal);
+                loading.style.display = "none";
+            }, 3000);
+        };
+    </script>
+</body>

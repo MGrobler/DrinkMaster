@@ -1,9 +1,37 @@
-﻿@{ 
+﻿@{
     ViewData["Title"] = "Home";
 
 }
 
+<head>
+    <style>
+
+        .btn-primary:hover {
+            box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+        }
+    </style>
+</head>
+
 <div class="text-center">
     <h1 class="display-4">Welcome to Drinkmaster</h1>
     <p>Choose your weap... option</p>
+
+    <br />
+    <br />
+
+    <a asp-action="Create"><input class="btn btn-primary" value="Create Game" /> </a>
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    <a asp-action="Join"><input class="btn btn-primary" value="Join Game" /> </a>
+
+
+
+    <br />
+    <br />
+    <br />
+
+    <iframe src="https://giphy.com/embed/1lCEysMyeO1acidWgY" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/drinkmaster-1lCEysMyeO1acidWgY">via GIPHY</a></p>
 </div>
+

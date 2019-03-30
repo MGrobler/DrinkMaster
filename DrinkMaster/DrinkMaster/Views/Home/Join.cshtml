@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Titele"] = "Join Game";
+}
+
+<div class="text-center">
+
+    <h2>Join Game</h2>
+    <br />
+    <br />
+    <head>
+        <style>
+
+            .btn-primary:hover {
+                box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+            }
+        </style>
+    </head>
+
+    <input placeholder="Player Name" />
+
+    <br />
+    <br />
+
+    <select name="cars">
+        <option value="Game1">Game 1</option>
+        <option value="Game2">Game 2</option>
+        <option value="Game3">Game 3</option>
+        <option value="Game4">Game 4</option>
+    </select>
+
+    <br />
+    <br />
+
+    <a asp-action="Lobby"><input class="btn btn-primary" value="Join" /> </a>
+    </div>

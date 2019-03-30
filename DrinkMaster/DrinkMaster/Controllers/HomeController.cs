@@ -15,7 +15,31 @@ namespace DrinkMaster.Controllers
             return View();
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
 
+        public IActionResult Join()
+        {
+            return View();
+        }
+
+        public IActionResult Lobby()
+        {
+            return View();
+        }
+
+        public IActionResult Load()
+        {
+            return View();
+        }
+
+        public IActionResult Game()
+        {
+            return View();
+        }
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
