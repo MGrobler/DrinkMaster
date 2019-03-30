@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Titele"] = "Create Game";
+}
+
+
+<div class="text-center">
+    <h2>Create Game</h2>
+
+    <br />
+    <br />
+
+    <head>
+        <style>
+
+            .btn-primary:hover {
+                box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+            }
+        </style>
+    </head>
+
+    <input placeholder="Player Name" />
+
+    <br />
+    <br />
+
+    <input placeholder="Game Name" />
+
+    <br />
+    <br />
+
+    <a asp-action="Lobby"><input class="btn btn-primary" value="Create" /> </a>
+    </div>
