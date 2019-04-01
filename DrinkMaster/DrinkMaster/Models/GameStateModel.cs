@@ -10,12 +10,14 @@ namespace DrinkMaster.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "Game Instance Name")]
+        [Display(Name = "Game Name")]
         [Required]
+        [MaxLength(15)]
         public string GameName { get; set; }
 
         [Display(Name = "Maximum Number of Players")]
         [Required]
+        [Range(2, 4)]
         public int MaxPlayerCount { get; set; }
 
         public List<PlayerModel> listOfPlayers { get; set; }
