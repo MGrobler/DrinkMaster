@@ -21,7 +21,8 @@ namespace DrinkMaster.Controllers
         // GET: GameStateModels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.GameStateModel.Include("listOfPlayers").ToListAsync());
+            return View(await _context.GameStateModel.Include( c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync());
+
         }
 
 
@@ -68,6 +69,7 @@ namespace DrinkMaster.Controllers
                 gameStateModel.listOfPlayers[0].playerDrinks = new List<PlayerDrinkModel>();
                 playerDrink.Name = "Drinker";
                 gameStateModel.listOfPlayers[0].playerDrinks.Add(playerDrink);
+                _context.PlayerDrinkModel.Add(playerDrink);
                 _context.PlayerModel.Add(playerModel);
                 _context.Add(gameStateModel);
                 await _context.SaveChangesAsync();
