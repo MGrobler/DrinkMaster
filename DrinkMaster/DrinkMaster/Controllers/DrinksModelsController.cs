@@ -31,10 +31,10 @@ namespace DrinkMaster.Controllers
             return View(await _context.DrinksModel.ToListAsync());
         }*/
 
-        [HttpPost]
-        public async Task<IActionResult> Index(string playerId)
+        // [HttpPost]
+        public async Task<IActionResult> Index(int playerId)
         {
-            _playerId = Int32.Parse(playerId);
+            _playerId = playerId;
 
             return View(await _context.DrinksModel.ToListAsync());
         }
@@ -166,6 +166,8 @@ namespace DrinkMaster.Controllers
 
         public async Task<IActionResult> Select(int id)
         {
+            _playerId = 1;
+
             var drinkModel = await _context.DrinksModel.FindAsync(id);
             var playerDrinkModel = new PlayerDrinkModel();
             playerDrinkModel.AlcoholPercentage = drinkModel.AlcoholPercentage;
@@ -173,7 +175,7 @@ namespace DrinkMaster.Controllers
 
             var model = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
             var gameStateModel = model.First();
-            gameStateModel.listOfPlayers[_playerId].playerDrinks.Add(playerDrinkModel);
+            gameStateModel.listOfPlayers[_playerId - 1].playerDrinks.Add(playerDrinkModel);
 
             _context.PlayerDrinkModel.Add(playerDrinkModel);
             _context.GameStateModel.Update(gameStateModel);

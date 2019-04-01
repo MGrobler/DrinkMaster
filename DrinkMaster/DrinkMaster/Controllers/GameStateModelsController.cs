@@ -271,9 +271,9 @@ namespace DrinkMaster.Controllers
             return gameStateModel.listOfPlayers;
         }
 
-        public async Task<IActionResult> AddDrink() // (int id?)
+        public async Task<IActionResult> AddDrink(int id) // (int id?)
         {
-            return RedirectToAction("Index", "DrinksModels");
+            return RedirectToAction("Index", "DrinksModels", id);
         }
     }
 
