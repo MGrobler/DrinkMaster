@@ -9,22 +9,22 @@ using DrinkMaster.Models;
 
 namespace DrinkMaster.Controllers
 {
-    public class GameModelsController : Controller
+    public class PlayerDrinkModelsController : Controller
     {
         private readonly DrinkMasterContext _context;
 
-        public GameModelsController(DrinkMasterContext context)
+        public PlayerDrinkModelsController(DrinkMasterContext context)
         {
             _context = context;
         }
 
-        // GET: GameModels
+        // GET: PlayerDrinkModels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.GameModel.ToListAsync());
+            return View(await _context.PlayerDrinkModel.ToListAsync());
         }
 
-        // GET: GameModels/Details/5
+        // GET: PlayerDrinkModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,40 +32,39 @@ namespace DrinkMaster.Controllers
                 return NotFound();
             }
 
-            var gameModel = await _context.GameModel
+            var playerDrinkModel = await _context.PlayerDrinkModel
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (gameModel == null)
+            if (playerDrinkModel == null)
             {
                 return NotFound();
             }
 
-            return View(gameModel);
+            return View(playerDrinkModel);
         }
 
-        // GET: GameModels/Create
+        // GET: PlayerDrinkModels/Create
         public IActionResult Create()
         {
-            Console.WriteLine("Hello Im creating");
             return View();
         }
 
-        // POST: GameModels/Create
+        // POST: PlayerDrinkModels/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,GameStarted")] GameModel gameModel)
+        public async Task<IActionResult> Create([Bind("Id,PlayerID,DrinkName,AlcoholPercentage,DrinkQuantity,Points")] PlayerDrinkModel playerDrinkModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(gameModel);
+                _context.Add(playerDrinkModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(gameModel);
+            return View(playerDrinkModel);
         }
 
-        // GET: GameModels/Edit/5
+        // GET: PlayerDrinkModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +72,22 @@ namespace DrinkMaster.Controllers
                 return NotFound();
             }
 
-            var gameModel = await _context.GameModel.FindAsync(id);
-            if (gameModel == null)
+            var playerDrinkModel = await _context.PlayerDrinkModel.FindAsync(id);
+            if (playerDrinkModel == null)
             {
                 return NotFound();
             }
-            return View(gameModel);
+            return View(playerDrinkModel);
         }
 
-        // POST: GameModels/Edit/5
+        // POST: PlayerDrinkModels/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GameStarted")] GameModel gameModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PlayerID,DrinkName,AlcoholPercentage,DrinkQuantity,Points")] PlayerDrinkModel playerDrinkModel)
         {
-            if (id != gameModel.Id)
+            if (id != playerDrinkModel.Id)
             {
                 return NotFound();
             }
@@ -97,12 +96,12 @@ namespace DrinkMaster.Controllers
             {
                 try
                 {
-                    _context.Update(gameModel);
+                    _context.Update(playerDrinkModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GameModelExists(gameModel.Id))
+                    if (!PlayerDrinkModelExists(playerDrinkModel.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +112,10 @@ namespace DrinkMaster.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(gameModel);
+            return View(playerDrinkModel);
         }
 
-        // GET: GameModels/Delete/5
+        // GET: PlayerDrinkModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +123,30 @@ namespace DrinkMaster.Controllers
                 return NotFound();
             }
 
-            var gameModel = await _context.GameModel
+            var playerDrinkModel = await _context.PlayerDrinkModel
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (gameModel == null)
+            if (playerDrinkModel == null)
             {
                 return NotFound();
             }
 
-            return View(gameModel);
+            return View(playerDrinkModel);
         }
 
-        // POST: GameModels/Delete/5
+        // POST: PlayerDrinkModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var gameModel = await _context.GameModel.FindAsync(id);
-            _context.GameModel.Remove(gameModel);
+            var playerDrinkModel = await _context.PlayerDrinkModel.FindAsync(id);
+            _context.PlayerDrinkModel.Remove(playerDrinkModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GameModelExists(int id)
+        private bool PlayerDrinkModelExists(int id)
         {
-            return _context.GameModel.Any(e => e.Id == id);
+            return _context.PlayerDrinkModel.Any(e => e.Id == id);
         }
     }
 }
