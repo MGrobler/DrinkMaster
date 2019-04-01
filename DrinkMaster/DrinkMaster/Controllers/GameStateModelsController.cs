@@ -224,7 +224,13 @@ namespace DrinkMaster.Controllers
 
             return gameStateModel.listOfPlayers;
         }
+
+        public async Task<IActionResult> AddDrink() // (int id?)
+        {
+            return RedirectToAction("Index", "DrinksModels");
+        }
     }
+
 
     
 }
