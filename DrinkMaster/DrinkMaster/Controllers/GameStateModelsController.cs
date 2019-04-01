@@ -74,11 +74,11 @@ namespace DrinkMaster.Controllers
 
                 _context.Add(gameStateModel);
                 await _context.SaveChangesAsync();
-                var modell = await _context.GameStateModel.FindAsync(1);
+               /* var modell = await _context.GameStateModel.FindAsync(1);
                 if (modell == null)
                 {
                     return NotFound();
-                }
+                }*/
 
                 return RedirectToAction("Create", "PlayerModels");
             }
@@ -162,7 +162,7 @@ namespace DrinkMaster.Controllers
             var gameStateModel = await _context.GameStateModel.FindAsync(id);
             _context.GameStateModel.Remove(gameStateModel);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Home", "Home");
         }
 
         private bool GameStateModelExists(int id)
