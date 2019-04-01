@@ -45,6 +45,7 @@ namespace DrinkMaster.Controllers
         // GET: GameModels/Create
         public IActionResult Create()
         {
+            Console.WriteLine("Hello Im creating");
             return View();
         }
 

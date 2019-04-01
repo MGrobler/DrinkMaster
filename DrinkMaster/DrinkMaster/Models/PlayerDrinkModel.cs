@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace DrinkMaster.Models
 {
-    public class PlayerDrinksModel
+    public class PlayerDrinkModel
     {
         public int Id { get; set; }
-        [Required]
-        public int PlayerID { get; set; }
-        [Required]
-        public int DrinkID { get; set; }
+
+        public string Name { get; set; }
         [Required]
         public int DrinkQuantity { get; set; }
         [Required]

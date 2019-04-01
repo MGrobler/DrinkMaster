@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DrinkMaster.Models.PlayerModel>
+﻿@model IEnumerable<DrinkMaster.Models.GameStateModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,10 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PlayerName)
+                @Html.DisplayNameFor(model => model.GameName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GameID)
+                @Html.DisplayNameFor(model => model.MaxPlayerCount)
             </th>
             <th></th>
         </tr>
@@ -25,10 +25,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PlayerName)
+                @Html.DisplayFor(modelItem => item.GameName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GameID)
+                @Html.DisplayFor(modelItem => item.MaxPlayerCount)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
