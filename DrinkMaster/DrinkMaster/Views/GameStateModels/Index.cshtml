@@ -48,6 +48,15 @@
                     </td>
 
                 </tr>
+                @foreach (var drinkItem in playerItem.playerDrinks)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => drinkItem.Name)
+                        </td>
+
+                    </tr>
+                }
             }
         }
     </tbody>

@@ -9,24 +9,22 @@ using DrinkMaster.Models;
 
 namespace DrinkMaster.Controllers
 {
-    public class GameStateModelsController : Controller
+    public class PlayerDrinkModelsController : Controller
     {
         private readonly DrinkMasterContext _context;
 
-        public GameStateModelsController(DrinkMasterContext context)
+        public PlayerDrinkModelsController(DrinkMasterContext context)
         {
             _context = context;
         }
 
-        // GET: GameStateModels
+        // GET: PlayerDrinkModels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.GameStateModel.Include( c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync());
-
+            return View(await _context.PlayerDrinkModel.ToListAsync());
         }
 
-
-        // GET: GameStateModels/Details/5
+        // GET: PlayerDrinkModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,57 +32,39 @@ namespace DrinkMaster.Controllers
                 return NotFound();
             }
 
-            var gameStateModel = await _context.GameStateModel
+            var playerDrinkModel = await _context.PlayerDrinkModel
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (gameStateModel == null)
+            if (playerDrinkModel == null)
             {
                 return NotFound();
             }
 
-            return View(gameStateModel);
+            return View(playerDrinkModel);
         }
 
-        // GET: GameStateModels/Create
+        // GET: PlayerDrinkModels/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: GameStateModels/Create
+        // POST: PlayerDrinkModels/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,GameName,MaxPlayerCount")] GameStateModel gameStateModel)
+        public async Task<IActionResult> Create([Bind("Id,Name,DrinkQuantity,Points")] PlayerDrinkModel playerDrinkModel)
         {
             if (ModelState.IsValid)
             {
-                System.Diagnostics.Debug.WriteLine("Hello");
-                gameStateModel.listOfPlayers = new List<PlayerModel>();
-                var playerModel = new PlayerModel();
-                playerModel.PlayerName = "Namer";
-                playerModel.TotalPoints = 100;
-                var playerDrink = new PlayerDrinkModel();
-                gameStateModel.listOfPlayers.Add(playerModel);
-                gameStateModel.listOfPlayers[0].playerDrinks = new List<PlayerDrinkModel>();
-                playerDrink.Name = "Drinker";
-                gameStateModel.listOfPlayers[0].playerDrinks.Add(playerDrink);
-                _context.PlayerDrinkModel.Add(playerDrink);
-                _context.PlayerModel.Add(playerModel);
-                _context.Add(gameStateModel);
+                _context.Add(playerDrinkModel);
                 await _context.SaveChangesAsync();
-                var modell = await _context.GameStateModel.FindAsync(1);
-                if (modell == null)
-                {
-                    return NotFound();
-                }
-                System.Diagnostics.Debug.WriteLine(modell.listOfPlayers[0].playerDrinks[0].Name);
                 return RedirectToAction(nameof(Index));
             }
-            return View(gameStateModel);
+            return View(playerDrinkModel);
         }
 
-        // GET: GameStateModels/Edit/5
+        // GET: PlayerDrinkModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -92,22 +72,22 @@ namespace DrinkMaster.Controllers
                 return NotFound();
             }
 
-            var gameStateModel = await _context.GameStateModel.FindAsync(id);
-            if (gameStateModel == null)
+            var playerDrinkModel = await _context.PlayerDrinkModel.FindAsync(id);
+            if (playerDrinkModel == null)
             {
                 return NotFound();
             }
-            return View(gameStateModel);
+            return View(playerDrinkModel);
         }
 
-        // POST: GameStateModels/Edit/5
+        // POST: PlayerDrinkModels/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,GameName,MaxPlayerCount")] GameStateModel gameStateModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,DrinkQuantity,Points")] PlayerDrinkModel playerDrinkModel)
         {
-            if (id != gameStateModel.Id)
+            if (id != playerDrinkModel.Id)
             {
                 return NotFound();
             }
@@ -116,12 +96,12 @@ namespace DrinkMaster.Controllers
             {
                 try
                 {
-                    _context.Update(gameStateModel);
+                    _context.Update(playerDrinkModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GameStateModelExists(gameStateModel.Id))
+                    if (!PlayerDrinkModelExists(playerDrinkModel.Id))
                     {
                         return NotFound();
                     }
@@ -132,10 +112,10 @@ namespace DrinkMaster.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(gameStateModel);
+            return View(playerDrinkModel);
         }
 
-        // GET: GameStateModels/Delete/5
+        // GET: PlayerDrinkModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -143,30 +123,30 @@ namespace DrinkMaster.Controllers
                 return NotFound();
             }
 
-            var gameStateModel = await _context.GameStateModel
+            var playerDrinkModel = await _context.PlayerDrinkModel
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (gameStateModel == null)
+            if (playerDrinkModel == null)
             {
                 return NotFound();
             }
 
-            return View(gameStateModel);
+            return View(playerDrinkModel);
         }
 
-        // POST: GameStateModels/Delete/5
+        // POST: PlayerDrinkModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var gameStateModel = await _context.GameStateModel.FindAsync(id);
-            _context.GameStateModel.Remove(gameStateModel);
+            var playerDrinkModel = await _context.PlayerDrinkModel.FindAsync(id);
+            _context.PlayerDrinkModel.Remove(playerDrinkModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GameStateModelExists(int id)
+        private bool PlayerDrinkModelExists(int id)
         {
-            return _context.GameStateModel.Any(e => e.Id == id);
+            return _context.PlayerDrinkModel.Any(e => e.Id == id);
         }
     }
 }

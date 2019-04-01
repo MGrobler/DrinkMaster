@@ -22,5 +22,7 @@ namespace DrinkMaster.Models
 
         public DbSet<DrinkMaster.Models.GameStateModel> GameStateModel { get; set; }
 
+        public DbSet<DrinkMaster.Models.PlayerDrinkModel> PlayerDrinkModel { get; set; }
+
     }
 }
