@@ -166,7 +166,7 @@ namespace DrinkMaster.Controllers
 
         public async Task<IActionResult> Select(int id)
         {
-            _playerId = 1;
+            /*_playerId = 1;
 
             var drinkModel = await _context.DrinksModel.FindAsync(id);
             var playerDrinkModel = new PlayerDrinkModel();
@@ -178,9 +178,25 @@ namespace DrinkMaster.Controllers
             gameStateModel.listOfPlayers[_playerId - 1].playerDrinks.Add(playerDrinkModel);
 
             _context.PlayerDrinkModel.Add(playerDrinkModel);
-            _context.GameStateModel.Update(gameStateModel);
+            _context.GameStateModel.Update(gameStateModel);*/
             // await _context.SaveChangesAsync();
+            return RedirectToAction("DrinkAdded", "GameStateModels");
 
+            var modell = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
+            var temp = modell.First();
+            temp.listOfPlayers.ForEach(element =>
+            {
+                if (element.playerDrinks == null)
+                {
+                    element.playerDrinks = new List<PlayerDrinkModel>();
+                }
+            });
+            var playerDrink1 = new PlayerDrinkModel();
+            playerDrink1.Points = 2;
+            playerDrink1.Name = "harde hout";
+            playerDrink1.DrinkQuantity = 3;
+            temp.listOfPlayers[0].playerDrinks.Add(playerDrink1);
+            await _context.SaveChangesAsync();
             return RedirectToAction("Game", "GameStateModels");
         }
     }
