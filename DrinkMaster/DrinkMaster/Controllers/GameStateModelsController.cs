@@ -29,7 +29,12 @@ namespace DrinkMaster.Controllers
             return View(await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync());
         }
 
-       
+        public async Task<IActionResult> EndGame()
+        {
+            // TODO: Clear _context to remove player models
+            return RedirectToAction("Create", "GameStateModels");
+        }
+
         // GET: GameStateModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -64,15 +69,16 @@ namespace DrinkMaster.Controllers
             if (ModelState.IsValid)
             {
                 System.Diagnostics.Debug.WriteLine("Hello");
-                //gameStateModel.listOfPlayers = setTestData(gameStateModel);
-                
+                gameStateModel.listOfPlayers = new List<PlayerModel>();
+
+
                 _context.Add(gameStateModel);
                 await _context.SaveChangesAsync();
-               /* var modell = await _context.GameStateModel.FindAsync(1);
+                var modell = await _context.GameStateModel.FindAsync(1);
                 if (modell == null)
                 {
                     return NotFound();
-                }*/
+                }
 
                 return RedirectToAction("Create", "PlayerModels");
             }
@@ -156,7 +162,7 @@ namespace DrinkMaster.Controllers
             var gameStateModel = await _context.GameStateModel.FindAsync(id);
             _context.GameStateModel.Remove(gameStateModel);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Home", "Home");
+            return RedirectToAction(nameof(Index));
         }
 
         private bool GameStateModelExists(int id)
@@ -265,9 +271,9 @@ namespace DrinkMaster.Controllers
             return gameStateModel.listOfPlayers;
         }
 
-        public async Task<IActionResult> AddDrink() // (int id?)
+        public async Task<IActionResult> AddDrink(int id) // (int id?)
         {
-            return RedirectToAction("Index", "DrinksModels");
+            return RedirectToAction("Index", "DrinksModels", id);
         }
     }
 

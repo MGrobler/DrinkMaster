@@ -59,8 +59,21 @@ namespace DrinkMaster.Controllers
             {
                 var modell = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
                 var temp = modell.First();
-                //System.Diagnostics.Debug.WriteLine(temp.listOfPlayers[0].PlayerName);
+
                 temp.listOfPlayers.Add(playerModel);
+                temp.listOfPlayers.ForEach(element =>
+               {
+                   if (element.playerDrinks == null)
+                   {
+                       element.playerDrinks = new List<PlayerDrinkModel>();
+                   } 
+               });
+                /*var playerDrink1 = new PlayerDrinkModel();
+                playerDrink1.Points = 2;
+                playerDrink1.Name = "harde hout";
+                playerDrink1.DrinkQuantity = 3;
+                temp.listOfPlayers[0].playerDrinks.Add(playerDrink1);
+                _context.PlayerDrinkModel.Add(playerDrink1);*/
                 _context.Add(playerModel);
                 _context.GameStateModel.Update(temp);
                 await _context.SaveChangesAsync();

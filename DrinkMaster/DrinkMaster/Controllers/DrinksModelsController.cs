@@ -6,21 +6,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DrinkMaster.Models;
+using DrinkMaster.StaticData;
 
 namespace DrinkMaster.Controllers
 {
     public class DrinksModelsController : Controller
     {
         private readonly DrinkMasterContext _context;
+        private int _playerId;
 
         public DrinksModelsController(DrinkMasterContext context)
         {
             _context = context;
+            DrinksData.DefaultDrinks.ForEach((element) =>
+            {
+                _context.DrinksModel.Add(element);
+            });
+            _context.SaveChangesAsync();
         }
 
         // GET: DrinksModels
-        public async Task<IActionResult> Index()
+        /*public async Task<IActionResult> Index()
         {
+            return View(await _context.DrinksModel.ToListAsync());
+        }*/
+
+        // [HttpPost]
+        public async Task<IActionResult> Index(int playerId)
+        {
+            _playerId = playerId;
+
             return View(await _context.DrinksModel.ToListAsync());
         }
 
@@ -147,6 +162,26 @@ namespace DrinkMaster.Controllers
         private bool DrinksModelExists(int id)
         {
             return _context.DrinksModel.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> Select(int id)
+        {
+            _playerId = 1;
+
+            var drinkModel = await _context.DrinksModel.FindAsync(id);
+            var playerDrinkModel = new PlayerDrinkModel();
+            playerDrinkModel.AlcoholPercentage = drinkModel.AlcoholPercentage;
+            playerDrinkModel.Name = drinkModel.DrinkName;
+
+            var model = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
+            var gameStateModel = model.First();
+            gameStateModel.listOfPlayers[_playerId - 1].playerDrinks.Add(playerDrinkModel);
+
+            _context.PlayerDrinkModel.Add(playerDrinkModel);
+            _context.GameStateModel.Update(gameStateModel);
+            // await _context.SaveChangesAsync();
+
+            return RedirectToAction("Game", "GameStateModels");
         }
     }
 }
