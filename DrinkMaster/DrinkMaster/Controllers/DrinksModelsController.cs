@@ -26,16 +26,16 @@ namespace DrinkMaster.Controllers
         }
 
         // GET: DrinksModels
-        public async Task<IActionResult> Index()
+        /*public async Task<IActionResult> Index()
         {
             return View(await _context.DrinksModel.ToListAsync());
-        }
+        }*/
 
         [HttpPost]
-        public async Task<IActionResult> Index(int playerId)
+        public async Task<IActionResult> Index(string playerId)
         {
-            _playerId = playerId;            
-            
+            _playerId = Int32.Parse(playerId);
+
             return View(await _context.DrinksModel.ToListAsync());
         }
 
@@ -168,11 +168,16 @@ namespace DrinkMaster.Controllers
         {
             var drinkModel = await _context.DrinksModel.FindAsync(id);
             var playerDrinkModel = new PlayerDrinkModel();
+            playerDrinkModel.AlcoholPercentage = drinkModel.AlcoholPercentage;
+            playerDrinkModel.Name = drinkModel.DrinkName;
 
-            // TODO: 
+            var model = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
+            var gameStateModel = model.First();
+            gameStateModel.listOfPlayers[_playerId].playerDrinks.Add(playerDrinkModel);
 
-            var playerModel = await _context.PlayerModel.FindAsync(_playerId);
-            playerModel.playerDrinks.Add(playerDrinkModel);
+            _context.PlayerDrinkModel.Add(playerDrinkModel);
+            _context.GameStateModel.Update(gameStateModel);
+            // await _context.SaveChangesAsync();
 
             return RedirectToAction("Game", "GameStateModels");
         }

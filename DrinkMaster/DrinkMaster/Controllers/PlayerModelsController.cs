@@ -59,7 +59,6 @@ namespace DrinkMaster.Controllers
             {
                 var modell = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
                 var temp = modell.First();
-                System.Diagnostics.Debug.WriteLine(temp.listOfPlayers[0].PlayerName);
                 temp.listOfPlayers.Add(playerModel);
                 _context.Add(playerModel);
                 _context.GameStateModel.Update(temp);

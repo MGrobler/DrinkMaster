@@ -69,7 +69,8 @@ namespace DrinkMaster.Controllers
             if (ModelState.IsValid)
             {
                 System.Diagnostics.Debug.WriteLine("Hello");
-                gameStateModel.listOfPlayers = setTestData(gameStateModel);
+                // gameStateModel.listOfPlayers = setTestData(gameStateModel);
+                gameStateModel.listOfPlayers = new List<PlayerModel>();
                 
                 _context.Add(gameStateModel);
                 await _context.SaveChangesAsync();
@@ -258,8 +259,6 @@ namespace DrinkMaster.Controllers
             playerDrink3.DrinkQuantity = 3;
             playerModel3.playerDrinks.Add(playerDrink3);
 
-            gameStateModel.listOfPlayers.Add(playerModel);
-            _context.PlayerModel.Add(playerModel);
             gameStateModel.listOfPlayers.Add(playerModel1);
             _context.PlayerModel.Add(playerModel1);
             gameStateModel.listOfPlayers.Add(playerModel2);
@@ -277,7 +276,7 @@ namespace DrinkMaster.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction("Index", "DrinksModels", id);
+            return RedirectToAction("Index", "DrinksModels", id.ToString());
         }
     }
 
