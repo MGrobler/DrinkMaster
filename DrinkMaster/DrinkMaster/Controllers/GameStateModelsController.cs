@@ -21,8 +21,9 @@ namespace DrinkMaster.Controllers
         // GET: GameStateModels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.GameStateModel.ToListAsync());
+            return View(await _context.GameStateModel.Include("listOfPlayers").ToListAsync());
         }
+
 
         // GET: GameStateModels/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -57,8 +58,25 @@ namespace DrinkMaster.Controllers
         {
             if (ModelState.IsValid)
             {
+                System.Diagnostics.Debug.WriteLine("Hello");
+                gameStateModel.listOfPlayers = new List<PlayerModel>();
+                var playerModel = new PlayerModel();
+                playerModel.PlayerName = "Namer";
+                playerModel.TotalPoints = 100;
+                var playerDrink = new PlayerDrinkModel();
+                gameStateModel.listOfPlayers.Add(playerModel);
+                gameStateModel.listOfPlayers[0].playerDrinks = new List<PlayerDrinkModel>();
+                playerDrink.Name = "Drinker";
+                gameStateModel.listOfPlayers[0].playerDrinks.Add(playerDrink);
+                _context.PlayerModel.Add(playerModel);
                 _context.Add(gameStateModel);
                 await _context.SaveChangesAsync();
+                var modell = await _context.GameStateModel.FindAsync(1);
+                if (modell == null)
+                {
+                    return NotFound();
+                }
+                System.Diagnostics.Debug.WriteLine(modell.listOfPlayers[0].playerDrinks[0].Name);
                 return RedirectToAction(nameof(Index));
             }
             return View(gameStateModel);

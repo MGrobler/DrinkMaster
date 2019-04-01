@@ -21,7 +21,7 @@ namespace DrinkMaster.Controllers
         // GET: DrinksModels
         public async Task<IActionResult> Index()
         {
-     
+            _context.GameStateModel.ToListAsync();
             return View(await _context.DrinksModel.ToListAsync());
         }
 

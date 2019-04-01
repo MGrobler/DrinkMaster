@@ -13,7 +13,7 @@ namespace DrinkMaster.Models
         public string PlayerName { get; set; }
         [Required]
 
-        public List<PlayerDrinkModel> playerDrinks;
+        public List<PlayerDrinkModel> playerDrinks { get; set; }
 
         public double TotalPoints { get; set; } = 0.0;
     }
