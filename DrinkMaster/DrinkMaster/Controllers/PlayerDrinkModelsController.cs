@@ -53,7 +53,7 @@ namespace DrinkMaster.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,DrinkQuantity,Points")] PlayerDrinkModel playerDrinkModel)
+        public async Task<IActionResult> Create([Bind("Id,PlayerID,DrinkName,AlcoholPercentage,DrinkQuantity,Points")] PlayerDrinkModel playerDrinkModel)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace DrinkMaster.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,DrinkQuantity,Points")] PlayerDrinkModel playerDrinkModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PlayerID,DrinkName,AlcoholPercentage,DrinkQuantity,Points")] PlayerDrinkModel playerDrinkModel)
         {
             if (id != playerDrinkModel.Id)
             {

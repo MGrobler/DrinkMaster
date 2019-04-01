@@ -14,15 +14,13 @@ namespace DrinkMaster.Models
         {
         }
 
-        public DbSet<GameModel> GameModel { get; set; }
-
         public DbSet<PlayerModel> PlayerModel { get; set; }
 
         public DbSet<DrinksModel> DrinksModel { get; set; }
 
-        public DbSet<DrinkMaster.Models.GameStateModel> GameStateModel { get; set; }
+        public DbSet<GameStateModel> GameStateModel { get; set; }
 
-        public DbSet<DrinkMaster.Models.PlayerDrinkModel> PlayerDrinkModel { get; set; }
+        public DbSet<PlayerDrinkModel> PlayerDrinkModel { get; set; }
 
     }
 }
