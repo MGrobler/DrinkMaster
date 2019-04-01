@@ -79,7 +79,7 @@ namespace DrinkMaster.Controllers
                     return NotFound();
                 }
                 System.Diagnostics.Debug.WriteLine(modell.listOfPlayers[0].playerDrinks[0].Name);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Create", "PlayerModels");
             }
             return View(gameStateModel);
         }

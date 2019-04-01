@@ -45,8 +45,7 @@ namespace DrinkMaster.Controllers
         // GET: PlayerModels/Create
         public IActionResult Create()
         {
-            PlayerModel player = new PlayerModel();
-            return View(player);
+            return View();
         }
 
         // POST: PlayerModels/Create
@@ -54,13 +53,24 @@ namespace DrinkMaster.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PlayerName,GameID")] PlayerModel playerModel)
+        public async Task<IActionResult> Create([Bind("Id,PlayerName,TotalPoints")] PlayerModel playerModel)
         {
             if (ModelState.IsValid)
             {
+                var modell = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
+                var temp = modell.First();
+                System.Diagnostics.Debug.WriteLine(temp.listOfPlayers[0].PlayerName);
+                temp.listOfPlayers.Add(playerModel);
                 _context.Add(playerModel);
+                _context.GameStateModel.Update(temp);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (temp.listOfPlayers.Count < temp.MaxPlayerCount)
+                {
+                    return RedirectToAction("Create", "PlayerModels");
+                } else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(playerModel);
         }
@@ -86,7 +96,7 @@ namespace DrinkMaster.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PlayerName,GameID")] PlayerModel playerModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PlayerName,TotalPoints")] PlayerModel playerModel)
         {
             if (id != playerModel.Id)
             {
