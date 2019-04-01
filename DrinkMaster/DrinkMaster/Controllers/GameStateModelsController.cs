@@ -64,15 +64,15 @@ namespace DrinkMaster.Controllers
             if (ModelState.IsValid)
             {
                 System.Diagnostics.Debug.WriteLine("Hello");
-                gameStateModel.listOfPlayers = setTestData(gameStateModel);
+                //gameStateModel.listOfPlayers = setTestData(gameStateModel);
                 
                 _context.Add(gameStateModel);
                 await _context.SaveChangesAsync();
-                var modell = await _context.GameStateModel.FindAsync(1);
+               /* var modell = await _context.GameStateModel.FindAsync(1);
                 if (modell == null)
                 {
                     return NotFound();
-                }
+                }*/
 
                 return RedirectToAction("Create", "PlayerModels");
             }

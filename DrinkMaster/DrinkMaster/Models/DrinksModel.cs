@@ -16,7 +16,7 @@ namespace DrinkMaster.Models
         [Required]
         public string DrinkName { get; set; }
 
-        [Display(Name = "Alcohol Percentage")]
+        [Display(Name = "Alcohol Percentage (%)")]
         [Range(0, 100)]
         [Required]
         public double AlcoholPercentage { get; set; }

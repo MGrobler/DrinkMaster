@@ -4,11 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Add New Drink</a>
-</p>
+<div class="text-left">
+    <h1>Drinks</h1>
+</div>
+
+<div class="text-right">
+    <a asp-action="Create" ><input type="submit" value="Add new Drink" class="btn btn-primary" /> </a>
+</div>
+
+<br />
+
 <table class="table">
     <thead>
         <tr>

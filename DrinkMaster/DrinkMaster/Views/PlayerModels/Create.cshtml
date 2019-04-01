@@ -4,10 +4,17 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<head>
+    <style>
 
-<h4>PlayerModel</h4>
-<hr />
+        .btn-primary:hover {
+            box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+        }
+    </style>
+</head>
+
+<h1>Add Player names</h1>
+<br />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -25,9 +32,6 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
