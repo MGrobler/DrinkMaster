@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Titele"] = "Join Game";
+﻿@model IEnumerable<DrinkMaster.Models.DrinksModel>
+@{
+    ViewData["Title"] = "Join Game";
 }
 
 <div class="text-center">
@@ -21,15 +22,45 @@
     <br />
     <br />
 
-    <select name="cars">
-        <option value="Game1">Game 1</option>
-        <option value="Game2">Game 2</option>
-        <option value="Game3">Game 3</option>
-        <option value="Game4">Game 4</option>
-    </select>
 
-    <br />
-    <br />
+
+    <p>
+        <a asp-action="Create">Add New Drink</a>
+    </p>
+    <form asp-controller="DrinksModelsController" asp-action="Index">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DrinkName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AlcoholPercentage)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DrinkName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AlcoholPercentage)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+
 
     <a asp-action="Lobby"><input class="btn btn-primary" value="Join" /> </a>
-    </div>
+</div>

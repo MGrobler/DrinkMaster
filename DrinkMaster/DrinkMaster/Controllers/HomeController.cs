@@ -5,11 +5,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DrinkMaster.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrinkMaster.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly DrinkMasterContext _context;
+
+        public HomeController(DrinkMasterContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Home()
         {
             return View();
@@ -17,12 +25,13 @@ namespace DrinkMaster.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            //return View("~/Views/GameInstanceModels/Create.cshtml");
+            return RedirectToAction("Create", "GameStateModels");
         }
 
-        public IActionResult Join()
+        public async Task<IActionResult> Join()
         {
-            return View();
+            return View(await _context.DrinksModel.ToListAsync());
         }
 
         public IActionResult Lobby()

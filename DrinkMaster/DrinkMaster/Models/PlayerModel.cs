@@ -12,6 +12,9 @@ namespace DrinkMaster.Models
         [Required]
         public string PlayerName { get; set; }
         [Required]
-        public int GameID { get; set; }
+
+        public List<PlayerDrinkModel> playerDrinks;
+
+        public int TotalPoints { get; set; }
     }
 }
