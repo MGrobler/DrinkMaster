@@ -77,6 +77,7 @@ namespace DrinkMaster.Controllers
                 _context.Add(playerModel);
                 _context.GameStateModel.Update(temp);
                 await _context.SaveChangesAsync();
+
                 if (temp.listOfPlayers.Count < temp.MaxPlayerCount)
                 {
                     return RedirectToAction("Create", "PlayerModels");

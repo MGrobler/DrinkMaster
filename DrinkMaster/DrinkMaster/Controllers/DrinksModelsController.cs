@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DrinkMaster.Models;
 using DrinkMaster.StaticData;
+using Microsoft.AspNetCore.Routing;
 
 namespace DrinkMaster.Controllers
 {
@@ -18,11 +19,7 @@ namespace DrinkMaster.Controllers
         public DrinksModelsController(DrinkMasterContext context)
         {
             _context = context;
-            DrinksData.DefaultDrinks.ForEach((element) =>
-            {
-                _context.DrinksModel.Add(element);
-            });
-            _context.SaveChangesAsync();            
+            
         }
 
         // GET: DrinksModels
@@ -34,10 +31,10 @@ namespace DrinkMaster.Controllers
         // [HttpPost]
         public async Task<IActionResult> Index(int playerId)
         {
-            var playerTrackerModel = new PlayerTrackerModel();
+            /*var playerTrackerModel = new PlayerTrackerModel();
             playerTrackerModel.playerId = playerId;
             _context.PlayerTrackerModel.Update(playerTrackerModel);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();*/
 
             // _playerId = playerId;
 
@@ -73,7 +70,7 @@ namespace DrinkMaster.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DrinkName,AlcoholPercentage")] DrinksModel drinksModel)
+        public async Task<IActionResult> Create([Bind("Id,DrinkName,AlcoholPercentage,Volume")] DrinksModel drinksModel)
         {
             if (ModelState.IsValid)
             {
@@ -170,8 +167,8 @@ namespace DrinkMaster.Controllers
         }
 
         public async Task<IActionResult> Select(int id)
-        {            
-            var drinkModel = await _context.DrinksModel.FindAsync(id);
+        {
+            /*var drinkModel = await _context.DrinksModel.FindAsync(id);
             var playerDrinkModel = new PlayerDrinkModel();
             playerDrinkModel.AlcoholPercentage = drinkModel.AlcoholPercentage;
             playerDrinkModel.Name = drinkModel.DrinkName;
@@ -185,10 +182,12 @@ namespace DrinkMaster.Controllers
             gameStateModel.listOfPlayers[playerIndex].playerDrinks.Add(playerDrinkModel);
 
             _context.PlayerDrinkModel.Add(playerDrinkModel);
-            _context.GameStateModel.Update(gameStateModel);
+            _context.GameStateModel.Update(gameStateModel);*/
             // await _context.SaveChangesAsync();
 
-            return RedirectToAction("Game", "GameStateModels");
+            //return RedirectToAction("DrinkAdded", "GameStateModels", _playerId, id);
+            return RedirectToAction("DrinkAdded", new RouteValueDictionary(
+                new { controller = "GameStateModels", action = "DrinkAdded", playerId = _playerId, drinkId = id }));
         }
     }
 }

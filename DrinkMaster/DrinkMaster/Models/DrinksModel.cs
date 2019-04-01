@@ -20,5 +20,12 @@ namespace DrinkMaster.Models
         [Range(0, 100)]
         [Required]
         public double AlcoholPercentage { get; set; }
+
+
+        [Display(Name = "Liquid Volume (ml)")]
+        [Required]
+        public double Volume { get; set; }
+
+
     }
 }

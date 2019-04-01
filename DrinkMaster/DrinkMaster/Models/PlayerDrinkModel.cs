@@ -14,7 +14,7 @@ namespace DrinkMaster.Models
         [Required]
         public double AlcoholPercentage { get; set; }
         [Required]
-        public int DrinkQuantity { get; set; }
+        public double DrinkQuantity { get; set; }
         [Required]
         public double Points { get; set; }
     }
