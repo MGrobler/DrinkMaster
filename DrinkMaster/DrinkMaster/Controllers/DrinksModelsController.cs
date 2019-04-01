@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DrinkMaster.Models;
 using DrinkMaster.StaticData;
+using Microsoft.AspNetCore.Routing;
 
 namespace DrinkMaster.Controllers
 {
@@ -164,11 +165,9 @@ namespace DrinkMaster.Controllers
             return _context.DrinksModel.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> Select(int id)
+        public IActionResult Select(int playerID, int drinkID)
         {
-            /*_playerId = 1;
-
-            var drinkModel = await _context.DrinksModel.FindAsync(id);
+            /*var drinkModel = await _context.DrinksModel.FindAsync(id);
             var playerDrinkModel = new PlayerDrinkModel();
             playerDrinkModel.AlcoholPercentage = drinkModel.AlcoholPercentage;
             playerDrinkModel.Name = drinkModel.DrinkName;
@@ -180,24 +179,10 @@ namespace DrinkMaster.Controllers
             _context.PlayerDrinkModel.Add(playerDrinkModel);
             _context.GameStateModel.Update(gameStateModel);*/
             // await _context.SaveChangesAsync();
-            return RedirectToAction("DrinkAdded", "GameStateModels");
 
-            var modell = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
-            var temp = modell.First();
-            temp.listOfPlayers.ForEach(element =>
-            {
-                if (element.playerDrinks == null)
-                {
-                    element.playerDrinks = new List<PlayerDrinkModel>();
-                }
-            });
-            var playerDrink1 = new PlayerDrinkModel();
-            playerDrink1.Points = 2;
-            playerDrink1.Name = "harde hout";
-            playerDrink1.DrinkQuantity = 3;
-            temp.listOfPlayers[0].playerDrinks.Add(playerDrink1);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Game", "GameStateModels");
+            //return RedirectToAction("DrinkAdded", "GameStateModels", _playerId, id);
+            return RedirectToAction("DrinkAdded", new RouteValueDictionary(
+                new { controller = "GameStateModels", action = "DrinkAdded", playerId = _playerId, drinkId = drinkID }));
         }
     }
 }

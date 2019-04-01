@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DrinkMaster.Models;
+using Microsoft.AspNetCore.Routing;
 
 namespace DrinkMaster.Controllers
 {
@@ -273,40 +274,27 @@ namespace DrinkMaster.Controllers
 
         public async Task<IActionResult> AddDrink(int id) // (int id?)
         {
-            var modell = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
-            var temp = modell.First();
-            temp.listOfPlayers.ForEach(element =>
-            {
-                if (element.playerDrinks == null)
-                {
-                    element.playerDrinks = new List<PlayerDrinkModel>();
-                }
-            });
-            var playerDrink1 = new PlayerDrinkModel();
-            playerDrink1.Points = 2;
-            playerDrink1.Name = "harde hooter";
-            playerDrink1.DrinkQuantity = 3;
-            temp.listOfPlayers[0].playerDrinks.Add(playerDrink1);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "DrinksModels", id);
+            return RedirectToAction("Index", new RouteValueDictionary(
+                new { controller = "DrinksModels", action = "Index", playerId = id }));
         }
 
-        public async Task<IActionResult> DrinkAdded(int id) // (int id?)
+        public async Task<IActionResult> DrinkAdded(int playerId, int drinkId) // (int id?)
         {
-            var modell = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
-            var temp = modell.First();
-            temp.listOfPlayers.ForEach(element =>
+            var model = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
+            var gameStateM = model.First();
+            gameStateM.listOfPlayers.ForEach(element =>
             {
                 if (element.playerDrinks == null)
                 {
                     element.playerDrinks = new List<PlayerDrinkModel>();
                 }
             });
-            var playerDrink1 = new PlayerDrinkModel();
-            playerDrink1.Points = 2;
-            playerDrink1.Name = "harde hooter";
-            playerDrink1.DrinkQuantity = 3;
-            temp.listOfPlayers[0].playerDrinks.Add(playerDrink1);
+            var newDrink = new PlayerDrinkModel();
+            var availableDrinks = await _context.DrinksModel.ToListAsync();
+            newDrink.Name = availableDrinks[drinkId - 1].DrinkName;
+            newDrink.AlcoholPercentage = availableDrinks[drinkId - 1].AlcoholPercentage;
+            newDrink.DrinkQuantity = 3;
+            gameStateM.listOfPlayers[playerId].playerDrinks.Add(newDrink);
             await _context.SaveChangesAsync();
             return RedirectToAction("Game", "GameStateModels");
         }

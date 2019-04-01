@@ -78,13 +78,6 @@ namespace DrinkMaster.Controllers
                 _context.GameStateModel.Update(temp);
                 await _context.SaveChangesAsync();
 
-                var playerDrink1 = new PlayerDrinkModel();
-                playerDrink1.Points = 2;
-                playerDrink1.Name = "harde hout";
-                playerDrink1.DrinkQuantity = 3;
-                temp.listOfPlayers[0].playerDrinks.Add(playerDrink1);
-                await _context.SaveChangesAsync();
-
                 if (temp.listOfPlayers.Count < temp.MaxPlayerCount)
                 {
                     return RedirectToAction("Create", "PlayerModels");
