@@ -22,7 +22,7 @@ namespace DrinkMaster.Controllers
             {
                 _context.DrinksModel.Add(element);
             });
-            _context.SaveChangesAsync();
+            _context.SaveChangesAsync();            
         }
 
         // GET: DrinksModels
@@ -34,7 +34,12 @@ namespace DrinkMaster.Controllers
         // [HttpPost]
         public async Task<IActionResult> Index(int playerId)
         {
-            _playerId = playerId;
+            var playerTrackerModel = new PlayerTrackerModel();
+            playerTrackerModel.playerId = playerId;
+            _context.PlayerTrackerModel.Update(playerTrackerModel);
+            await _context.SaveChangesAsync();
+
+            // _playerId = playerId;
 
             return View(await _context.DrinksModel.ToListAsync());
         }
@@ -173,7 +178,11 @@ namespace DrinkMaster.Controllers
 
             var model = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
             var gameStateModel = model.First();
-            gameStateModel.listOfPlayers[_playerId - 1].playerDrinks.Add(playerDrinkModel);
+
+            var playerTrackerModel = await _context.PlayerTrackerModel.FindAsync(1);
+            var playerIndex = playerTrackerModel.playerId - 1;
+            _context.PlayerTrackerModel.Remove(playerTrackerModel);
+            gameStateModel.listOfPlayers[playerIndex].playerDrinks.Add(playerDrinkModel);
 
             _context.PlayerDrinkModel.Add(playerDrinkModel);
             _context.GameStateModel.Update(gameStateModel);

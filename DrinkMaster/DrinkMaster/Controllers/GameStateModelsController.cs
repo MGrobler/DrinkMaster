@@ -67,6 +67,10 @@ namespace DrinkMaster.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,GameName,MaxPlayerCount")] GameStateModel gameStateModel)
         {
+            var playerTrackerModel = new PlayerTrackerModel();
+            playerTrackerModel.Id = 1;
+            _context.PlayerTrackerModel.Add(playerTrackerModel);
+
             if (ModelState.IsValid)
             {
                 System.Diagnostics.Debug.WriteLine("Hello");

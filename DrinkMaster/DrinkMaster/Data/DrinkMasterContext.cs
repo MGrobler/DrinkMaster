@@ -22,5 +22,7 @@ namespace DrinkMaster.Models
 
         public DbSet<PlayerDrinkModel> PlayerDrinkModel { get; set; }
 
+        public DbSet<DrinkMaster.Models.PlayerTrackerModel> PlayerTrackerModel { get; set; }
+
     }
 }
