@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<DrinkMaster.Models.GameStateModel>
 
-
 @{
     ViewData["Title"] = "Game";
 }
@@ -28,18 +27,16 @@
 
         .redButton {
             background-color: red;
-            
         }
 
-        .redButton:hover {
-            box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
-        }
+            .redButton:hover {
+                box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+            }
 
-       
+
         .btn-primary:hover {
             box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
         }
-
     </style>
 </head>
 <body>
@@ -47,7 +44,12 @@
 
     <!-- Keep the Page Content Here.-->
     <div class="text-center">
-        <h2>Game in Progress</h2>
+        @foreach (var item in Model)
+        {
+            <h2>@item.GameName</h2>
+            <br />            
+            <h2> @item.WinningPlayer </h2>
+        }
     </div>
 
 
