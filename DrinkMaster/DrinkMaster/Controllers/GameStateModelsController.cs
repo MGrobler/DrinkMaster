@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DrinkMaster.Models;
+using Microsoft.AspNetCore.Routing;
 
 namespace DrinkMaster.Controllers
 {
@@ -273,7 +274,8 @@ namespace DrinkMaster.Controllers
 
         public async Task<IActionResult> AddDrink(int id) // (int id?)
         {
-            return RedirectToAction("Index", "DrinksModels", id);
+            return RedirectToAction("Index", new RouteValueDictionary(
+                new { controller = "DrinksModels", action = "Index", playerId = id }));
         }
     }
 

@@ -165,9 +165,7 @@ namespace DrinkMaster.Controllers
         }
 
         public async Task<IActionResult> Select(int id)
-        {
-            _playerId = 1;
-
+        {            
             var drinkModel = await _context.DrinksModel.FindAsync(id);
             var playerDrinkModel = new PlayerDrinkModel();
             playerDrinkModel.AlcoholPercentage = drinkModel.AlcoholPercentage;
