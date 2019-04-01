@@ -78,8 +78,8 @@ namespace DrinkMaster.Controllers
                 {
                     return NotFound();
                 }
-        
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Create", "PlayerModels");
             }
             return View(gameStateModel);
         }
@@ -167,6 +167,51 @@ namespace DrinkMaster.Controllers
         private bool GameStateModelExists(int id)
         {
             return _context.GameStateModel.Any(e => e.Id == id);
+        }
+
+        // POST: GameStateModels/CalculatePoints/5
+        [HttpPost]
+        public async Task<IActionResult> CalculatePoints(int id, int drinkId)
+        {
+            var model = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
+            var gameStateModel = model.First();
+            if (gameStateModel == null)
+            {
+                return NotFound();
+            }
+
+            var drink = gameStateModel.listOfPlayers[id].playerDrinks[drinkId];
+            var points = drink.AlcoholPercentage / 100.0 * drink.DrinkQuantity;
+
+            drink.Points = points;
+            gameStateModel.listOfPlayers[id].TotalPoints += points;
+
+            var winningPts = 0.0;
+            foreach (var player in gameStateModel.listOfPlayers)
+            {
+                if (player.TotalPoints >= winningPts)
+                {
+                    gameStateModel.WinningPlayer = player.PlayerName;
+                    winningPts = player.TotalPoints;
+                }
+            }
+            try
+            {
+                _context.Update(gameStateModel);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GameStateModelExists(gameStateModel.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return View(gameStateModel);
         }
 
         private List<PlayerModel> setTestData(GameStateModel gameStateModel)

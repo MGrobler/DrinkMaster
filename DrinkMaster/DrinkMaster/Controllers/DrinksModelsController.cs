@@ -28,6 +28,7 @@ namespace DrinkMaster.Controllers
         // GET: DrinksModels
         public async Task<IActionResult> Index()
         {
+<<<<<<< HEAD
             return View(await _context.DrinksModel.ToListAsync());
         }
 
@@ -36,6 +37,8 @@ namespace DrinkMaster.Controllers
         {
             _playerId = playerId;            
             
+=======
+>>>>>>> 037d9a967f181b26b4bb23dc5eaf3b47bff71ea7
             return View(await _context.DrinksModel.ToListAsync());
         }
 
