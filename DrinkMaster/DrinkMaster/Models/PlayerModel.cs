@@ -11,10 +11,11 @@ namespace DrinkMaster.Models
         public int Id { get; set; }
         [Required]
         public string PlayerName { get; set; }
-        [Required]
+
 
         public List<PlayerDrinkModel> playerDrinks { get; set; }
 
-        public double TotalPoints { get; set; } = 0.0;
+        [Required]
+        public double TotalPoints { get; set; } = (double)0.0;
     }
 }
