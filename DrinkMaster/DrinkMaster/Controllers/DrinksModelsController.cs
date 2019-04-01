@@ -163,5 +163,18 @@ namespace DrinkMaster.Controllers
         {
             return _context.DrinksModel.Any(e => e.Id == id);
         }
+
+        public async Task<IActionResult> Select(int id)
+        {
+            var drinkModel = await _context.DrinksModel.FindAsync(id);
+            var playerDrinkModel = new PlayerDrinkModel();
+
+            // TODO: 
+
+            var playerModel = await _context.PlayerModel.FindAsync(_playerId);
+            playerModel.playerDrinks.Add(playerDrinkModel);
+
+            return RedirectToAction("Game", "GameStateModels");
+        }
     }
 }

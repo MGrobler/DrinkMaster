@@ -232,7 +232,6 @@ namespace DrinkMaster.Controllers
                 return NotFound();
             }
 
-
             return RedirectToAction("Index", "DrinksModels", id);
         }
     }
