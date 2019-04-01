@@ -156,7 +156,7 @@ namespace DrinkMaster.Controllers
             var gameStateModel = await _context.GameStateModel.FindAsync(id);
             _context.GameStateModel.Remove(gameStateModel);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Home", "Home");
         }
 
         private bool GameStateModelExists(int id)
