@@ -6,22 +6,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DrinkMaster.Models;
+using DrinkMaster.StaticData;
 
 namespace DrinkMaster.Controllers
 {
     public class DrinksModelsController : Controller
     {
         private readonly DrinkMasterContext _context;
+        private int _playerId;
 
         public DrinksModelsController(DrinkMasterContext context)
         {
             _context = context;
+            DrinksData.DefaultDrinks.ForEach((element) =>
+            {
+                _context.DrinksModel.Add(element);
+            });
+            _context.SaveChangesAsync();
         }
 
         // GET: DrinksModels
         public async Task<IActionResult> Index()
         {
-            _context.GameStateModel.ToListAsync();
+            return View(await _context.DrinksModel.ToListAsync());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(int playerId)
+        {
+            _playerId = playerId;            
+            
             return View(await _context.DrinksModel.ToListAsync());
         }
 
