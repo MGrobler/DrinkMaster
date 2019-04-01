@@ -83,12 +83,10 @@
         </table>
     }
 
-    <div class="text-right">
-        <a asp-action="EndGame"><input type="submit" class="btn btn-primary redButton" value="End Game" /> </a>
-    </div>
-
-
-
-
-
+        <div class="text-right">
+            @foreach (var item in Model)
+            {
+                <a asp-action="Delete" asp-route-id="@item.Id"><input type="submit" class="btn btn-primary redButton" value="End Game" /> </a>
+            }
+        </div>
 </body>

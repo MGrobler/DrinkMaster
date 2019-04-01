@@ -29,12 +29,7 @@ namespace DrinkMaster.Controllers
             return View(await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync());
         }
 
-        public async Task<IActionResult> EndGame()
-        {
-            // TODO: Clear _context to remove player models
-            return RedirectToAction("Create", "GameStateModels");
-        }
-
+       
         // GET: GameStateModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {

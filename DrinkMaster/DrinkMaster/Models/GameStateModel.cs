@@ -16,6 +16,7 @@ namespace DrinkMaster.Models
 
         [Display(Name = "Maximum Number of Players")]
         [Required]
+        [Range(2, 4)]
         public int MaxPlayerCount { get; set; }
 
 
