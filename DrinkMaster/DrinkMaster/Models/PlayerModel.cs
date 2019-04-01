@@ -15,6 +15,6 @@ namespace DrinkMaster.Models
 
         public List<PlayerDrinkModel> playerDrinks { get; set; }
 
-        public int TotalPoints { get; set; }
+        public double TotalPoints { get; set; } = 0.0;
     }
 }

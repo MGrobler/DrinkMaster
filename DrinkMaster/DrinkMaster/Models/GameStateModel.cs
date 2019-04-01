@@ -19,13 +19,9 @@ namespace DrinkMaster.Models
         [Range(2, 4)]
         public int MaxPlayerCount { get; set; }
 
-
-
-
         public List<PlayerModel> listOfPlayers { get; set; }
 
-
-
+        public string WinningPlayer { get; set; }
 
     }
 }

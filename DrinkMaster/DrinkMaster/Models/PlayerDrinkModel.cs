@@ -9,8 +9,10 @@ namespace DrinkMaster.Models
     public class PlayerDrinkModel
     {
         public int Id { get; set; }
-
+        [Required]
         public string Name { get; set; }
+        [Required]
+        public int AlcoholPercentage { get; set; }
         [Required]
         public int DrinkQuantity { get; set; }
         [Required]
