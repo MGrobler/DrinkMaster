@@ -69,7 +69,7 @@ namespace DrinkMaster.Controllers
                     return RedirectToAction("Create", "PlayerModels");
                 } else
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Game", "GameStateModels");
                 }
             }
             return View(playerModel);

@@ -21,10 +21,19 @@ namespace DrinkMaster.Controllers
         // GET: GameStateModels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.GameStateModel.Include( c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync());
-
+            return View(await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync());
         }
 
+        public async Task<IActionResult> Game()
+        {
+            return View(await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync());
+        }
+
+        public async Task<IActionResult> EndGame()
+        {
+            // TODO: Clear _context to remove player models
+            return RedirectToAction("Create", "GameStateModels");
+        }
 
         // GET: GameStateModels/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -60,17 +69,8 @@ namespace DrinkMaster.Controllers
             if (ModelState.IsValid)
             {
                 System.Diagnostics.Debug.WriteLine("Hello");
-                gameStateModel.listOfPlayers = new List<PlayerModel>();
-                var playerModel = new PlayerModel();
-                playerModel.PlayerName = "Namer";
-                playerModel.TotalPoints = 100;
-                var playerDrink = new PlayerDrinkModel();
-                gameStateModel.listOfPlayers.Add(playerModel);
-                gameStateModel.listOfPlayers[0].playerDrinks = new List<PlayerDrinkModel>();
-                playerDrink.Name = "Drinker";
-                gameStateModel.listOfPlayers[0].playerDrinks.Add(playerDrink);
-                _context.PlayerDrinkModel.Add(playerDrink);
-                _context.PlayerModel.Add(playerModel);
+                gameStateModel.listOfPlayers = setTestData(gameStateModel);
+                
                 _context.Add(gameStateModel);
                 await _context.SaveChangesAsync();
                 var modell = await _context.GameStateModel.FindAsync(1);
@@ -78,7 +78,7 @@ namespace DrinkMaster.Controllers
                 {
                     return NotFound();
                 }
-                System.Diagnostics.Debug.WriteLine(modell.listOfPlayers[0].playerDrinks[0].Name);
+
                 return RedirectToAction("Create", "PlayerModels");
             }
             return View(gameStateModel);
@@ -168,5 +168,69 @@ namespace DrinkMaster.Controllers
         {
             return _context.GameStateModel.Any(e => e.Id == id);
         }
+
+        private List<PlayerModel> setTestData(GameStateModel gameStateModel)
+        {
+            gameStateModel.listOfPlayers = new List<PlayerModel>();
+            var playerModel = new PlayerModel();
+            playerModel.PlayerName = "Namer";
+            playerModel.TotalPoints = 100;
+            playerModel.playerDrinks = new List<PlayerDrinkModel>();
+            var playerDrink = new PlayerDrinkModel();
+            playerDrink.Points = 2;
+            playerDrink.Name = "harde hout";
+            playerDrink.DrinkQuantity = 3;
+            playerModel.playerDrinks.Add(playerDrink);
+
+
+            var playerModel1 = new PlayerModel();
+            playerModel1.PlayerName = "Namer323";
+            playerModel1.TotalPoints = 109;
+            playerModel1.playerDrinks = new List<PlayerDrinkModel>();
+            var playerDrink1 = new PlayerDrinkModel();
+            playerDrink1.Points = 2;
+            playerDrink1.Name = "harde hout";
+            playerDrink1.DrinkQuantity = 3;
+            playerModel1.playerDrinks.Add(playerDrink1);
+
+            var playerModel2 = new PlayerModel();
+            playerModel2.PlayerName = "Person";
+            playerModel2.TotalPoints = 1002;
+            playerModel2.playerDrinks = new List<PlayerDrinkModel>();
+            var playerDrink2 = new PlayerDrinkModel();
+            playerDrink2.Points = 2;
+            playerDrink2.Name = "harde hout";
+            playerDrink2.DrinkQuantity = 3;
+            playerModel2.playerDrinks.Add(playerDrink2);
+
+            var playerModel3 = new PlayerModel();
+            playerModel3.PlayerName = "Pi";
+            playerModel3.TotalPoints = 10011;
+            playerModel3.playerDrinks = new List<PlayerDrinkModel>();
+            var playerDrink3 = new PlayerDrinkModel();
+            playerDrink3.Points = 2;
+            playerDrink3.Name = "harde hout";
+            playerDrink3.DrinkQuantity = 3;
+            playerModel3.playerDrinks.Add(playerDrink3);
+
+            gameStateModel.listOfPlayers.Add(playerModel);
+            _context.PlayerModel.Add(playerModel);
+            gameStateModel.listOfPlayers.Add(playerModel1);
+            _context.PlayerModel.Add(playerModel1);
+            gameStateModel.listOfPlayers.Add(playerModel2);
+            _context.PlayerModel.Add(playerModel2);
+            gameStateModel.listOfPlayers.Add(playerModel3);
+            _context.PlayerModel.Add(playerModel3);
+
+            return gameStateModel.listOfPlayers;
+        }
+
+        public async Task<IActionResult> AddDrink() // (int id?)
+        {
+            return RedirectToAction("Index", "DrinksModels");
+        }
     }
+
+
+    
 }
