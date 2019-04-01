@@ -1,4 +1,7 @@
-﻿@{
+﻿@model IEnumerable<DrinkMaster.Models.GameStateModel>
+
+
+@{
     ViewData["Titele"] = "Join Game";
 }
 
@@ -33,16 +36,17 @@
             background-color: White;
             z-index: 999;
         }
-
         table {
+            border-width: 1px;
             table-layout: fixed;
             width: 100%;
         }
-
-        td {
-            width:;
+        th {
+            width: 25%;
         }
-
+        td {
+            width: 25%;
+        }
     </style>
 </head>
 <body>
@@ -77,12 +81,34 @@
 
 
 
-        <script type="text/javascript">
-            window.onload = function () {
-                setTimeout(function () {
-                    document.body.removeChild(modal);
-                    loading.style.display = "none";
-                }, 3000);
-            };
-        </script>
+    <table class="table">
+        <thead>
+            <tr>
+               
+                    @foreach (var item in Model)
+                    {
+                        <th>@Html.DisplayFor(modelItem => item.Players)</th>
+                    }
+         
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+    <script type="text/javascript">
+        window.onload = function () {
+            setTimeout(function () {
+                document.body.removeChild(modal);
+                loading.style.display = "none";
+            }, 3000);
+        };
+    </script>
 </body>

@@ -24,6 +24,11 @@ namespace DrinkMaster.Controllers
             return View(await _context.GameStateModel.ToListAsync());
         }
 
+        public async Task<IActionResult> Game()
+        {
+            return View(await _context.GameStateModel.ToListAsync());
+        }
+
         // GET: GameStateModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -46,6 +51,12 @@ namespace DrinkMaster.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Players()
+        {
+            var gameStateModel = await _context.GameStateModel.FindAsync(1);
+            return View(await _context.GameStateModel.ToListAsync());
         }
 
         // POST: GameStateModels/Create
