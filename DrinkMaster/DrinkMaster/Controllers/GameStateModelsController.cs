@@ -69,7 +69,7 @@ namespace DrinkMaster.Controllers
                 gameStateModel.listOfPlayers[0].playerDrinks = new List<PlayerDrinkModel>();
                 playerDrink.Name = "Drinker";
                 playerDrink.AlcoholPercentage = 5;
-                playerDrink.AlcoholPercentage = 100;
+                playerDrink.DrinkQuantity = 100;
                 gameStateModel.listOfPlayers[0].playerDrinks.Add(playerDrink);
                 _context.PlayerDrinkModel.Add(playerDrink);
                 _context.PlayerModel.Add(playerModel);
@@ -176,8 +176,8 @@ namespace DrinkMaster.Controllers
         [HttpPost]
         public async Task<IActionResult> CalculatePoints(int id, int drinkId)
         {
-            var gameStateModel = await _context.GameStateModel
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var model = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
+            var gameStateModel = model.First();
             if (gameStateModel == null)
             {
                 return NotFound();
