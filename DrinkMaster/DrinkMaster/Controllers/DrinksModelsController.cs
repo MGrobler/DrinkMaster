@@ -19,11 +19,7 @@ namespace DrinkMaster.Controllers
         public DrinksModelsController(DrinkMasterContext context)
         {
             _context = context;
-            DrinksData.DefaultDrinks.ForEach((element) =>
-            {
-                _context.DrinksModel.Add(element);
-            });
-            _context.SaveChangesAsync();            
+            
         }
 
         // GET: DrinksModels
@@ -35,10 +31,10 @@ namespace DrinkMaster.Controllers
         // [HttpPost]
         public async Task<IActionResult> Index(int playerId)
         {
-            var playerTrackerModel = new PlayerTrackerModel();
+            /*var playerTrackerModel = new PlayerTrackerModel();
             playerTrackerModel.playerId = playerId;
             _context.PlayerTrackerModel.Update(playerTrackerModel);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();*/
 
             // _playerId = playerId;
 
@@ -74,7 +70,7 @@ namespace DrinkMaster.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DrinkName,AlcoholPercentage")] DrinksModel drinksModel)
+        public async Task<IActionResult> Create([Bind("Id,DrinkName,AlcoholPercentage,Volume")] DrinksModel drinksModel)
         {
             if (ModelState.IsValid)
             {
@@ -170,7 +166,7 @@ namespace DrinkMaster.Controllers
             return _context.DrinksModel.Any(e => e.Id == id);
         }
 
-        public IActionResult Select(int playerID, int drinkID)
+        public async Task<IActionResult> Select(int id)
         {
             /*var drinkModel = await _context.DrinksModel.FindAsync(id);
             var playerDrinkModel = new PlayerDrinkModel();
@@ -191,7 +187,7 @@ namespace DrinkMaster.Controllers
 
             //return RedirectToAction("DrinkAdded", "GameStateModels", _playerId, id);
             return RedirectToAction("DrinkAdded", new RouteValueDictionary(
-                new { controller = "GameStateModels", action = "DrinkAdded", playerId = _playerId, drinkId = drinkID }));
+                new { controller = "GameStateModels", action = "DrinkAdded", playerId = _playerId, drinkId = id }));
         }
     }
 }

@@ -186,21 +186,28 @@ namespace DrinkMaster.Controllers
                 return NotFound();
             }
 
-            var drink = gameStateModel.listOfPlayers[id].playerDrinks[drinkId];
-            var points = drink.AlcoholPercentage / 100.0 * drink.DrinkQuantity;
-
-            drink.Points = points;
-            gameStateModel.listOfPlayers[id].TotalPoints += points;
-
-            var winningPts = 0.0;
-            foreach (var player in gameStateModel.listOfPlayers)
+            var playerList = gameStateModel.listOfPlayers[id];
+            gameStateModel.listOfPlayers[id].TotalPoints = 0;
+            playerList.playerDrinks.ForEach(element =>
             {
-                if (player.TotalPoints >= winningPts)
-                {
-                    gameStateModel.WinningPlayer = player.PlayerName;
-                    winningPts = player.TotalPoints;
-                }
-            }
+
+               var drink = element;
+               var points = drink.AlcoholPercentage / 100.0 * drink.DrinkQuantity;
+
+               drink.Points = points;
+               gameStateModel.listOfPlayers[id].TotalPoints += points;
+
+               var winningPts = 0.0;
+               foreach (var player in gameStateModel.listOfPlayers)
+               {
+                   if (player.TotalPoints >= winningPts)
+                   {
+                       gameStateModel.WinningPlayer = player.PlayerName;
+                       winningPts = player.TotalPoints;
+                   }
+               }
+           });
+
             try
             {
                 _context.Update(gameStateModel);
@@ -217,7 +224,7 @@ namespace DrinkMaster.Controllers
                     throw;
                 }
             }
-            return View(gameStateModel);
+            return RedirectToAction("Game", "GameStateModels");
         }
 
         private List<PlayerModel> setTestData(GameStateModel gameStateModel)
@@ -278,12 +285,17 @@ namespace DrinkMaster.Controllers
 
         public async Task<IActionResult> AddDrink(int id) // (int id?)
         {
+            var playerTrackerModel = await _context.PlayerTrackerModel.FindAsync(1);
+            playerTrackerModel.playerId = id;
+            _context.PlayerTrackerModel.Update(playerTrackerModel);
+            await _context.SaveChangesAsync();
             return RedirectToAction("Index", new RouteValueDictionary(
                 new { controller = "DrinksModels", action = "Index", playerId = id }));
         }
 
         public async Task<IActionResult> DrinkAdded(int playerId, int drinkId) // (int id?)
         {
+            var playerTrackerModel = await _context.PlayerTrackerModel.FindAsync(1);
             var model = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
             var gameStateM = model.First();
             gameStateM.listOfPlayers.ForEach(element =>
@@ -295,11 +307,12 @@ namespace DrinkMaster.Controllers
             });
             var newDrink = new PlayerDrinkModel();
             var availableDrinks = await _context.DrinksModel.ToListAsync();
-            newDrink.Name = availableDrinks[drinkId - 1].DrinkName;
-            newDrink.AlcoholPercentage = availableDrinks[drinkId - 1].AlcoholPercentage;
-            newDrink.DrinkQuantity = 3;
-            gameStateM.listOfPlayers[playerId].playerDrinks.Add(newDrink);
+            newDrink.Name = availableDrinks[drinkId-1].DrinkName;
+            newDrink.AlcoholPercentage = availableDrinks[drinkId-1].AlcoholPercentage;
+            newDrink.DrinkQuantity = availableDrinks[drinkId - 1].Volume;
+            gameStateM.listOfPlayers[playerTrackerModel.playerId-1].playerDrinks.Add(newDrink);
             await _context.SaveChangesAsync();
+            await CalculatePoints(playerTrackerModel.playerId - 1, drinkId - 1);
             return RedirectToAction("Game", "GameStateModels");
         }
     }
