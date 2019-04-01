@@ -63,11 +63,13 @@ namespace DrinkMaster.Controllers
                 gameStateModel.listOfPlayers = new List<PlayerModel>();
                 var playerModel = new PlayerModel();
                 playerModel.PlayerName = "Namer";
-                playerModel.TotalPoints = 100;
+                //playerModel.TotalPoints = 100;
                 var playerDrink = new PlayerDrinkModel();
                 gameStateModel.listOfPlayers.Add(playerModel);
                 gameStateModel.listOfPlayers[0].playerDrinks = new List<PlayerDrinkModel>();
                 playerDrink.Name = "Drinker";
+                playerDrink.AlcoholPercentage = 5;
+                playerDrink.AlcoholPercentage = 100;
                 gameStateModel.listOfPlayers[0].playerDrinks.Add(playerDrink);
                 _context.PlayerDrinkModel.Add(playerDrink);
                 _context.PlayerModel.Add(playerModel);
@@ -79,6 +81,7 @@ namespace DrinkMaster.Controllers
                     return NotFound();
                 }
                 System.Diagnostics.Debug.WriteLine(modell.listOfPlayers[0].playerDrinks[0].Name);
+                await CalculatePoints(0, 0);
                 return RedirectToAction(nameof(Index));
             }
             return View(gameStateModel);
@@ -180,12 +183,23 @@ namespace DrinkMaster.Controllers
                 return NotFound();
             }
 
-            var drink = gameStateModel.Players[id].playerDrinks[drinkId];
+            var drink = gameStateModel.listOfPlayers[id].playerDrinks[drinkId];
             var points = drink.AlcoholPercentage / 100.0 * drink.DrinkQuantity;
 
-            gameStateModel.Players[id].TotalPoints += points;
+            drink.Points = points;
+            gameStateModel.listOfPlayers[id].TotalPoints += points;
 
-            try
+            var winningPts = 0.0;
+            foreach (var player in gameStateModel.listOfPlayers)
+            {
+                if (player.TotalPoints >= winningPts)
+                {
+                    gameStateModel.WinningPlayer = player.PlayerName;
+                    winningPts = player.TotalPoints;
+                }
+            }
+
+                    try
             {
                 _context.Update(gameStateModel);
                 await _context.SaveChangesAsync();

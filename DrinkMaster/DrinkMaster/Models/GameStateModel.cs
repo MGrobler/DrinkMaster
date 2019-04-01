@@ -20,5 +20,7 @@ namespace DrinkMaster.Models
 
         public List<PlayerModel> listOfPlayers { get; set; }
 
+        public string WinningPlayer { get; set; }
+
     }
 }
