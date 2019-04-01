@@ -33,6 +33,16 @@
             background-color: White;
             z-index: 999;
         }
+
+        table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        td {
+            width:;
+        }
+
     </style>
 </head>
 <body>
@@ -65,12 +75,14 @@
         <a asp-action="Game"><input type="submit" class="btn btn-primary" value="Add" /> </a>
     </div>
 
-    <script type="text/javascript">
-        window.onload = function () {
-            setTimeout(function () {
-                document.body.removeChild(modal);
-                loading.style.display = "none";
-            }, 3000);
-        };
-    </script>
+
+
+        <script type="text/javascript">
+            window.onload = function () {
+                setTimeout(function () {
+                    document.body.removeChild(modal);
+                    loading.style.display = "none";
+                }, 3000);
+            };
+        </script>
 </body>

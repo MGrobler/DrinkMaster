@@ -1,0 +1,94 @@
+﻿@model IEnumerable<DrinkMaster.Models.GameStateModel>
+
+
+@{
+    ViewData["Title"] = "Game";
+}
+
+
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+
+    <style type="text/css">        
+        table {
+            border-width: 1px;
+            table-layout: fixed;
+            width: 100%;
+        }
+        th {
+            width: 25%;
+        }
+        td {
+            width: 25%;
+        }
+
+        .redButton {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Keep the Page Content Here.-->
+    <div class="text-center">
+        <h2>Game in Progress</h2>
+    </div>
+
+
+    @foreach (var item in Model)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    @foreach (var playerItem in item.listOfPlayers)
+                    {
+                        <td>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            <h3>@playerItem.PlayerName</h3>
+                                        </td>
+                                        <td>
+                                            <a asp-action="AddDrink"><input type="submit" class="btn btn-primary" value="Add Drink" /> </a>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var drink in playerItem.playerDrinks)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @drink.Name &nbsp; @drink.Points
+                                            </td>
+                                        </tr>
+                                    }                                
+                                    <tr>
+                                        <td>
+                                            <b>Total:</b> &nbsp;@playerItem.TotalPoints
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                <tr></tr>
+            </tbody>
+        </table>
+    }
+
+    <div class="text-right">
+        <a asp-action="EndGame"><input type="submit" class="btn btn-primary redButton" value="End Game" /> </a>
+    </div>
+
+
+
+
+
+</body>
