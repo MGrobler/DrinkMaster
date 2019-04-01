@@ -18,7 +18,13 @@ namespace DrinkMaster.Models
         [Required]
         public int MaxPlayerCount { get; set; }
 
-        public List<DrinkMaster.Models.PlayerModel> Players;
+
+
+
+        public List<PlayerModel> listOfPlayers { get; set; }
+
+
+
 
     }
 }
