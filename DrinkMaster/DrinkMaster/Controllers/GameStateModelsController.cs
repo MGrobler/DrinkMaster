@@ -148,5 +148,41 @@ namespace DrinkMaster.Controllers
         {
             return _context.GameStateModel.Any(e => e.Id == id);
         }
+
+        // POST: GameStateModels/CalculatePoints/5
+        [HttpPost]
+        public async Task<IActionResult> CalculatePoints(int id, int drinkId)
+        {
+            var gameStateModel = await _context.GameStateModel
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (gameStateModel == null)
+            {
+                return NotFound();
+            }
+
+            var drink = gameStateModel.Players[id].playerDrinks[drinkId];
+            var points = drink.AlcoholPercentage / 100.0 * drink.DrinkQuantity;
+
+            gameStateModel.Players[id].TotalPoints += points;
+
+            try
+            {
+                _context.Update(gameStateModel);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GameStateModelExists(gameStateModel.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return View(gameStateModel);
+        }
     }
 }
