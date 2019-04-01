@@ -9,7 +9,9 @@ namespace DrinkMaster.Models
     public class PlayerModel
     {
         public int Id { get; set; }
+
         [Required]
+        [MaxLength(15)]
         public string PlayerName { get; set; }
 
 

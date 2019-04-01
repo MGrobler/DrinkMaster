@@ -67,6 +67,10 @@ namespace DrinkMaster.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,GameName,MaxPlayerCount")] GameStateModel gameStateModel)
         {
+            var playerTrackerModel = new PlayerTrackerModel();
+            playerTrackerModel.Id = 1;
+            _context.PlayerTrackerModel.Add(playerTrackerModel);
+
             if (ModelState.IsValid)
             {
                 System.Diagnostics.Debug.WriteLine("Hello");
@@ -75,11 +79,11 @@ namespace DrinkMaster.Controllers
 
                 _context.Add(gameStateModel);
                 await _context.SaveChangesAsync();
-                var modell = await _context.GameStateModel.FindAsync(1);
+               /* var modell = await _context.GameStateModel.FindAsync(1);
                 if (modell == null)
                 {
                     return NotFound();
-                }
+                }*/
 
                 return RedirectToAction("Create", "PlayerModels");
             }
@@ -163,7 +167,7 @@ namespace DrinkMaster.Controllers
             var gameStateModel = await _context.GameStateModel.FindAsync(id);
             _context.GameStateModel.Remove(gameStateModel);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Home", "Home");
         }
 
         private bool GameStateModelExists(int id)
