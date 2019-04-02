@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DrinkMaster.Models;
 using Microsoft.AspNetCore.Routing;
+using DrinkMaster.StaticData;
 
 namespace DrinkMaster.Controllers
 {
@@ -70,6 +71,16 @@ namespace DrinkMaster.Controllers
             var playerTrackerModel = new PlayerTrackerModel();
             playerTrackerModel.Id = 1;
             _context.PlayerTrackerModel.Add(playerTrackerModel);
+
+            var defaultDrinks = DrinksData.DefaultDrinks;
+            defaultDrinks.ForEach(element =>
+            {
+                var drink = new DrinksModel();
+                drink.DrinkName = element.DrinkName;
+                drink.AlcoholPercentage = element.AlcoholPercentage;
+                drink.Volume = element.Volume;
+                _context.DrinksModel.Add(drink);
+            });
 
             if (ModelState.IsValid)
             {
