@@ -22,22 +22,9 @@ namespace DrinkMaster.Controllers
             
         }
 
-        // GET: DrinksModels
-        /*public async Task<IActionResult> Index()
-        {
-            return View(await _context.DrinksModel.ToListAsync());
-        }*/
-
         // [HttpPost]
         public async Task<IActionResult> Index(int playerId)
         {
-            /*var playerTrackerModel = new PlayerTrackerModel();
-            playerTrackerModel.playerId = playerId;
-            _context.PlayerTrackerModel.Update(playerTrackerModel);
-            await _context.SaveChangesAsync();*/
-
-            // _playerId = playerId;
-
             return View(await _context.DrinksModel.ToListAsync());
         }
 
@@ -168,24 +155,6 @@ namespace DrinkMaster.Controllers
 
         public async Task<IActionResult> Select(int id)
         {
-            /*var drinkModel = await _context.DrinksModel.FindAsync(id);
-            var playerDrinkModel = new PlayerDrinkModel();
-            playerDrinkModel.AlcoholPercentage = drinkModel.AlcoholPercentage;
-            playerDrinkModel.Name = drinkModel.DrinkName;
-
-            var model = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
-            var gameStateModel = model.First();
-
-            var playerTrackerModel = await _context.PlayerTrackerModel.FindAsync(1);
-            var playerIndex = playerTrackerModel.playerId - 1;
-            _context.PlayerTrackerModel.Remove(playerTrackerModel);
-            gameStateModel.listOfPlayers[playerIndex].playerDrinks.Add(playerDrinkModel);
-
-            _context.PlayerDrinkModel.Add(playerDrinkModel);
-            _context.GameStateModel.Update(gameStateModel);*/
-            // await _context.SaveChangesAsync();
-
-            //return RedirectToAction("DrinkAdded", "GameStateModels", _playerId, id);
             return RedirectToAction("DrinkAdded", new RouteValueDictionary(
                 new { controller = "GameStateModels", action = "DrinkAdded", playerId = _playerId, drinkId = id }));
         }

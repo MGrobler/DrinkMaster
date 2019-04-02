@@ -33,7 +33,6 @@ namespace DrinkMaster.Controllers
 
         public async Task<IActionResult> EndGame()
         {
-            // TODO: Clear _context to remove player models
             return RedirectToAction("Create", "GameStateModels");
         }
 
@@ -87,14 +86,8 @@ namespace DrinkMaster.Controllers
                 System.Diagnostics.Debug.WriteLine("Hello");
                 gameStateModel.listOfPlayers = new List<PlayerModel>();
 
-
                 _context.Add(gameStateModel);
                 await _context.SaveChangesAsync();
-               /* var modell = await _context.GameStateModel.FindAsync(1);
-                if (modell == null)
-                {
-                    return NotFound();
-                }*/
 
                 return RedirectToAction("Create", "PlayerModels");
             }
@@ -294,7 +287,7 @@ namespace DrinkMaster.Controllers
             return gameStateModel.listOfPlayers;
         }
 
-        public async Task<IActionResult> AddDrink(int id) // (int id?)
+        public async Task<IActionResult> AddDrink(int id)
         {
             var playerTrackerModel = await _context.PlayerTrackerModel.FindAsync(1);
             playerTrackerModel.playerId = id;
@@ -304,7 +297,7 @@ namespace DrinkMaster.Controllers
                 new { controller = "DrinksModels", action = "Index", playerId = id }));
         }
 
-        public async Task<IActionResult> DrinkAdded(int playerId, int drinkId) // (int id?)
+        public async Task<IActionResult> DrinkAdded(int playerId, int drinkId)
         {
             var playerTrackerModel = await _context.PlayerTrackerModel.FindAsync(1);
             var model = await _context.GameStateModel.Include(c => c.listOfPlayers).ThenInclude(c => c.playerDrinks).ToListAsync();
